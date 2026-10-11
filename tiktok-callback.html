@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JaoBong Studio – TikTok sign-in</title>
+<style>body { font-family: system-ui, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; line-height: 1.7; }</style>
+</head>
+<body>
+<h2>กำลังเชื่อม TikTok กับ JaoBong Studio…</h2>
+<p id="msg">กำลังส่งต่อไปยัง Studio ในเครื่องของคุณ</p>
+<script>
+  // TikTok only accepts https redirect URIs, so this public page hands the
+  // one-time authorization code to the Studio running on the owner's own PC.
+  // Nothing is stored or sent anywhere else.
+  (function () {
+    var q = location.search;
+    var target = "http://localhost:31002/api/studio/publish/tiktok/callback" + q;
+    if (!/[?&](code|error)=/.test(q)) {
+      document.getElementById("msg").textContent = "ไม่พบข้อมูลการเชื่อมต่อ กรุณากดเชื่อมใหม่จาก Studio";
+      return;
+    }
+    location.replace(target);
+    setTimeout(function () {
+      document.getElementById("msg").innerHTML = 'ถ้าหน้าไม่เปลี่ยนเอง ให้เปิดหน้านี้บนคอมที่รัน Studio หรือ <a href="' + target + '">กดที่นี่</a>';
+    }, 3000);
+  })();
+</script>
+</body>
+</html>
